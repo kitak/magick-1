@@ -353,6 +353,16 @@ func (im *MagickImage) Resize(geometry string) (err error) {
 	return nil
 }
 
+func (im *MagickImage) Composite(composite_im *MagickImage, xoffset, yoffset int) (err error) {
+	c_x := (C.ssize_t)(xoffset)
+	c_y := (C.ssize_t)(yoffset)
+	success := C.CompositeImage(im.Image, C.OverCompositeOp, composite_im.Image, c_x, c_y)
+	if success != C.MagickTrue {
+		return nil
+	}
+	return nil
+}
+
 // Crop crops the image based on the geometry string passed and stores the cropped image in place
 // For more info about Geometry see http://www.imagemagick.org/script/command-line-processing.php#geometry
 func (im *MagickImage) Crop(geometry string) (err error) {
